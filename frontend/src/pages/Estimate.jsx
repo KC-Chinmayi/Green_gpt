@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import EmissionChart from '../components/EmissionChart';
 
 export default function Estimate() {
   const [distance, setDistance] = useState('');
   const [unit, setUnit] = useState('km');
   const [method, setMethod] = useState('air');
   const [result, setResult] = useState(null);
+  const [emissionHistory, setEmissionHistory] = useState([]);
 
   const handleEstimate = async () => {
     const response = await fetch('http://localhost:5000/api/estimate', {
@@ -22,6 +24,28 @@ export default function Estimate() {
 
     if (response.ok) {
       setResult(data);
+
+      // Step 3: Add this result to emission history for chart
+      const transportNames = {
+  car: "Car",
+  bus: "Bus",
+  truck: "Truck",
+  bike: "2-Wheeler",
+  cycle: "Cycle",
+  train: "Train",
+  ship: "Ship",
+  air: "Aeroplane",
+  ev: "Electric Vehicle",
+};
+
+const transport = transportNames[method] || method;
+
+      const newEntry = {
+        transport: transport,
+        emission: data.data.attributes.carbon_kg,
+      };
+
+      setEmissionHistory((prev) => [...prev, newEntry]);
     } else {
       alert("Error: " + (data.error?.message || "Unknown error"));
     }
@@ -57,22 +81,21 @@ export default function Estimate() {
 
         <div>
           <label className="block font-medium mb-1">Transport Method:</label>
-         <select
-  value={method}
-  onChange={(e) => setMethod(e.target.value)}
-  className="w-full p-2 border rounded"
->
-  <option value="car">Car</option>
-  <option value="bus">Bus</option>
-  <option value="truck">Truck</option>
-  <option value="bike">2-Wheeler</option>
-  <option value="cycle">Cycle</option>
-  <option value="train">Train</option>
-  <option value="ship">Ship</option>
-  <option value="air">Aeroplane</option>
-  <option value="ev">Electric Vehicle</option>
-</select>
-
+          <select
+            value={method}
+            onChange={(e) => setMethod(e.target.value)}
+            className="w-full p-2 border rounded"
+          >
+            <option value="car">Car</option>
+            <option value="bus">Bus</option>
+            <option value="truck">Truck</option>
+            <option value="bike">2-Wheeler</option>
+            <option value="cycle">Cycle</option>
+            <option value="train">Train</option>
+            <option value="ship">Ship</option>
+            <option value="air">Aeroplane</option>
+            <option value="ev">Electric Vehicle</option>
+          </select>
         </div>
 
         <button
@@ -95,6 +118,11 @@ export default function Estimate() {
             Method: {result.data.attributes.transport_method}
           </p>
         </div>
+      )}
+
+      {/* Step 4: Show the chart when history exists */}
+      {emissionHistory.length > 0 && (
+        <EmissionChart data={emissionHistory} />
       )}
     </div>
   );
