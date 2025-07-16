@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import EmissionChart from '../components/EmissionChart';
 
 export default function Estimate() {
   const [distance, setDistance] = useState('');
@@ -7,6 +8,8 @@ export default function Estimate() {
   const [reply, setReply] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [result, setResult] = useState(null);
+  const [emissionHistory, setEmissionHistory] = useState([]);
 
   const handleEstimate = async () => {
     setLoading(true);
@@ -29,6 +32,29 @@ export default function Estimate() {
       }
 
       setReply(aiData.reply);
+
+      // If AI returns emission data, add to chart history
+      const transportNames = {
+        car: 'Car',
+        bus: 'Bus',
+        truck: 'Truck',
+        bike: '2-Wheeler',
+        cycle: 'Cycle',
+        train: 'Train',
+        ship: 'Ship',
+        air: 'Aeroplane',
+        ev: 'Electric Vehicle',
+      };
+
+      const transport = transportNames[method] || method;
+
+      const newEntry = {
+        transport: transport,
+        emission: aiData.carbon_kg || 0, // fallback if not returned
+      };
+
+      setEmissionHistory((prev) => [...prev, newEntry]);
+
     } catch (err) {
       setError(err.message || 'Unknown error');
     } finally {
@@ -101,6 +127,10 @@ export default function Estimate() {
           <h3 className="text-lg font-semibold text-gray-800 mb-2">AI Suggestions:</h3>
           <p className="text-gray-700 whitespace-pre-wrap">{reply}</p>
         </div>
+      )}
+
+      {emissionHistory.length > 0 && (
+        <EmissionChart data={emissionHistory} />
       )}
     </div>
   );
