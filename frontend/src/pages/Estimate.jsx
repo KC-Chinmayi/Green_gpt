@@ -33,7 +33,6 @@ export default function Estimate() {
 
       setReply(aiData.reply);
 
-      // If AI returns emission data, add to chart history
       const transportNames = {
         car: 'Car',
         bus: 'Bus',
@@ -48,13 +47,15 @@ export default function Estimate() {
 
       const transport = transportNames[method] || method;
 
+      const mockCarbonKg = parseFloat((Math.random() * 5 + 2).toFixed(2)); // 2–7 kg
+
       const newEntry = {
         transport: transport,
-        emission: aiData.carbon_kg || 0, // fallback if not returned
+        emission: mockCarbonKg,
       };
 
+      console.log('Mock chart entry:', newEntry);
       setEmissionHistory((prev) => [...prev, newEntry]);
-
     } catch (err) {
       setError(err.message || 'Unknown error');
     } finally {
@@ -135,3 +136,4 @@ export default function Estimate() {
     </div>
   );
 }
+
