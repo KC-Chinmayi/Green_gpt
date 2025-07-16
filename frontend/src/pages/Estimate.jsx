@@ -4,26 +4,35 @@ export default function Estimate() {
   const [distance, setDistance] = useState('');
   const [unit, setUnit] = useState('km');
   const [method, setMethod] = useState('air');
-  const [result, setResult] = useState(null);
+  const [reply, setReply] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleEstimate = async () => {
-    const response = await fetch('http://localhost:5000/api/estimate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        type: 'shipping',
-        distance_value: parseFloat(distance),
-        distance_unit: unit,
-        transport_method: method
-      }),
-    });
+    setLoading(true);
+    setReply('');
+    setError('');
 
-    const data = await response.json();
+    const prompt = `I traveled ${distance} ${unit} using a ${method}. Estimate my carbon footprint and give tips to reduce it.`;
 
-    if (response.ok) {
-      setResult(data);
-    } else {
-      alert("Error: " + (data.error?.message || "Unknown error"));
+    try {
+      const aiResponse = await fetch('http://localhost:3001/api/carbon-estimate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input: prompt }),
+      });
+
+      const aiData = await aiResponse.json();
+
+      if (!aiResponse.ok) {
+        throw new Error(aiData.error || 'AI API failed');
+      }
+
+      setReply(aiData.reply);
+    } catch (err) {
+      setError(err.message || 'Unknown error');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,43 +66,40 @@ export default function Estimate() {
 
         <div>
           <label className="block font-medium mb-1">Transport Method:</label>
-         <select
-  value={method}
-  onChange={(e) => setMethod(e.target.value)}
-  className="w-full p-2 border rounded"
->
-  <option value="car">Car</option>
-  <option value="bus">Bus</option>
-  <option value="truck">Truck</option>
-  <option value="bike">2-Wheeler</option>
-  <option value="cycle">Cycle</option>
-  <option value="train">Train</option>
-  <option value="ship">Ship</option>
-  <option value="air">Aeroplane</option>
-  <option value="ev">Electric Vehicle</option>
-</select>
-
+          <select
+            value={method}
+            onChange={(e) => setMethod(e.target.value)}
+            className="w-full p-2 border rounded"
+          >
+            <option value="car">Car</option>
+            <option value="bus">Bus</option>
+            <option value="truck">Truck</option>
+            <option value="bike">2-Wheeler</option>
+            <option value="cycle">Cycle</option>
+            <option value="train">Train</option>
+            <option value="ship">Ship</option>
+            <option value="air">Aeroplane</option>
+            <option value="ev">Electric Vehicle</option>
+          </select>
         </div>
 
         <button
           onClick={handleEstimate}
+          disabled={loading}
           className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded font-semibold"
         >
-          Estimate Emissions
+          {loading ? 'Estimating...' : 'Estimate Emissions'}
         </button>
       </div>
 
-      {result?.data?.attributes?.carbon_kg && (
-        <div className="mt-6 text-center">
-          <h3 className="text-xl font-semibold text-gray-800">
-            Estimated CO₂ Emission:
-          </h3>
-          <p className="text-2xl text-green-700 font-bold mt-2">
-            {result.data.attributes.carbon_kg} kg
-          </p>
-          <p className="text-gray-600 mt-1">
-            Method: {result.data.attributes.transport_method}
-          </p>
+      {error && (
+        <div className="mt-6 text-red-600 font-semibold text-center">{error}</div>
+      )}
+
+      {reply && (
+        <div className="mt-6 bg-gray-100 p-4 rounded shadow max-w-xl">
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">AI Suggestions:</h3>
+          <p className="text-gray-700 whitespace-pre-wrap">{reply}</p>
         </div>
       )}
     </div>
