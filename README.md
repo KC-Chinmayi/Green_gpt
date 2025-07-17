@@ -115,7 +115,6 @@ COHERE_API_KEY=your-api-key-here
 
 
 ### 🏠 Home Page
-<<<<<<< HEAD
 ![Home Page](frontend/src/assets/home.png)
 
 
@@ -127,18 +126,6 @@ COHERE_API_KEY=your-api-key-here
 
 ### 🤖 AI Suggestions
 ![AI Tips](frontend/src/assets/ai-tips.png)
-=======
-![Home Page](./assets/home.png)
-
-### 📝 Input Form
-![Input Form](./assets/form.png)
-
-### 📊 Emission Chart
-![Chart](./assets/chart.png)
-
-### 🤖 AI Suggestions
-![AI Tips](./assets/ai-tips.png)
->>>>>>> 02b309b2d5e308d4894424675b56007bb2616290
 
 
 ---
