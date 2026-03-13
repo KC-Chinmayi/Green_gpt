@@ -14,7 +14,7 @@ router.post('/estimate', async (req, res) => {
     const response = await axios.post(
       'https://api.cohere.ai/v1/chat',
       {
-        model: "command-r-plus",
+        model: "command-a-03-2025",
         message: userInput,
         temperature: 0.7,
         chat_history: [],

@@ -19,7 +19,7 @@ export default function Estimate() {
     const prompt = `I traveled ${distance} ${unit} using a ${method}. Estimate my carbon footprint and give tips to reduce it.`;
 
     try {
-      const aiResponse = await fetch('http://localhost:3001/api/carbon-estimate', {
+      const aiResponse = await fetch('http://localhost:5000/api/carbon-estimate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ input: prompt }),

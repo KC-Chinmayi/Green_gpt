@@ -7,7 +7,7 @@ require('dotenv').config();
 console.log("🔑 COHERE_API_KEY =", process.env.COHERE_API_KEY ? "✅ Loaded" : "❌ Missing");
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -21,7 +21,7 @@ app.post('/api/carbon-estimate', async (req, res) => {
     const response = await axios.post(
       'https://api.cohere.ai/v1/chat',
       {
-        model: "command-r-plus",
+        model: "command-a-03-2025",
         message: userInput,
         temperature: 0.7,
         chat_history: [],
