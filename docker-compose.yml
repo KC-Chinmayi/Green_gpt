@@ -16,7 +16,7 @@ services:
     depends_on:
       - backend
 
-    prometheus:
+  prometheus:
       image: prom/prometheus
       container_name: prometheus
       volumes:
