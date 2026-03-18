@@ -65,7 +65,7 @@ export default function Estimate() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white p-8">
-      <h2 className="text-3xl font-bold text-green-700 mb-6">🌱 Carbon Emission Estimator</h2>
+      <h2 className="text-3xl font-bold text-green-700 mb-6">🌱Welcome to Carbon Emission Estimator</h2>
 
       <div className="w-full max-w-md bg-gray-100 p-6 rounded-xl shadow-md space-y-4">
         <div>
