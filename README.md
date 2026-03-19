@@ -141,7 +141,7 @@ docker-compose up --build
 
 ## 🖼️ Screenshots
 
-```md
+
 ### 🏠 Home Page
 
 ![Home Page](frontend/src/assets/home.png)
