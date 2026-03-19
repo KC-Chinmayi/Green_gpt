@@ -11,6 +11,8 @@ GreenGPT is a smart web application that helps users estimate their **carbon emi
 * [🧮 Emission Calculation Logic](#-emission-calculation-logic)
 * [🧠 AI Suggestions](#-ai-suggestions)
 * [🛠 Tech Stack](#-tech-stack)
+* [⚙️ DevOps & Deployment](#️-devops--deployment)
+* [📊 Monitoring](#-monitoring)
 * [🧪 Setup Instructions](#-setup-instructions)
 * [🔮 Future Enhancements](#-future-enhancements)
 * [👥 Contributors](#-contributors)
@@ -54,12 +56,34 @@ Some examples include:
 ## 🛠 Tech Stack
 
 * **Frontend**: React.js + Vite + TailwindCSS
-* **Backend**: Node.js + Express (Mock API)
+* **Backend**: Node.js + Express
 * **Charting**: Recharts
 * **AI Integration**: Cohere API
 * **Version Control**: Git + GitHub
 
 ---
+
+## ⚙️ DevOps & Deployment
+
+* 🐳 Containerized using Docker  
+* 📦 Multi-container setup using Docker Compose  
+* 🔁 CI/CD pipeline using GitHub Actions  
+* ☁️ Deployed on AWS EC2  
+* 🌐 Configured Nginx as reverse proxy  
+
+---
+
+## 📊 Monitoring
+
+* 📈 Metrics collection using Prometheus  
+* 📊 Visualization using Grafana dashboards  
+
+### Metrics Tracked
+
+* CPU usage (~0.05–0.2%)  
+* Memory usage (~50–60 MB)  
+* API request count  
+* API response time  
 
 ## 🧪 Setup Instructions
 
@@ -94,7 +118,11 @@ Inside the `backend/` folder:
 COHERE_API_KEY=your-api-key-here
 ```
 
----
+### 5. Run with Docker (Optional)
+
+```bash
+docker-compose up --build
+```
 
 ## 🔮 Future Enhancements
 
@@ -113,8 +141,9 @@ COHERE_API_KEY=your-api-key-here
 
 ## 🖼️ Screenshots
 
-
+```md
 ### 🏠 Home Page
+
 ![Home Page](frontend/src/assets/home.png)
 
 
@@ -127,6 +156,5 @@ COHERE_API_KEY=your-api-key-here
 ### 🤖 AI Suggestions
 ![AI Tips](frontend/src/assets/ai-tips.png)
 
-
----
-
+### Grafana Dashboard
+![Dashboard](frontend/src/assets/Dashboard.png)
